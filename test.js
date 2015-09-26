@@ -727,6 +727,18 @@ describe('File contructor', function () {
 		});
 	});
 
+	it('Generates tree', function(){
+		return Client.generateTree(mockups.org, mockups.repo1).then(function(tree){
+			return true;
+		});
+	});
+
+	it('Generates log', function(){
+		return Repo1.log().then(function(tree){
+			return true;
+		});
+	});
+
 
 	/*
 	 it('Debugs tree', function () {
