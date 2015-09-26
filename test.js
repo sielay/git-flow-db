@@ -1,6 +1,7 @@
 'use strict';
 
 var mongo      = require('mongodb').MongoClient,
+	ObjectID   = require('mongodb').ObjectID,
 	Client     = require('./index').client,
 	File       = require('./index').file,
 	MergeError = require('./index').error,
@@ -175,6 +176,10 @@ describe('ClientClient', function () {
 			return true;
 		}).then(function () {
 			return shouldCounts(0, 17, 0, 0);
+		}).then(function () {
+			return Client.retrieveObject(ObjectID());
+		}).then(function (nothing) {
+			should.not.exist(nothing);
 		});
 
 	});
@@ -304,8 +309,7 @@ describe('ClientClient', function () {
 	});
 
 	it('List repos', function () {
-		return Client.listForOrg(mockups.org).then(function(list) {
-			console.log(list);
+		return Client.listForOrg(mockups.org).then(function (list) {
 			return true;
 		});
 	});
