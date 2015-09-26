@@ -1,0 +1,41 @@
+{
+	"name": "git-flow-db",
+	"version": "1.0.0",
+	"description": "Storage of documents in database using git-a-like flow and versioning. Now on top of mongoDB",
+	"main": "index.js",
+	"scripts": {
+		"test": "mocha"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/sielay/git-in-db.git"
+	},
+	"keywords": [
+		"git",
+		"mongodb",
+		"version",
+		"versioning",
+		"git-sha1",
+		"git-sha1-commit",
+		"git-flow",
+		"commit"
+	],
+	"author": "lukaszsielski@gmail.com",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/sielay/git-in-db/issues"
+	},
+	"homepage": "https://github.com/sielay/git-in-db#readme",
+	"devDependencies": {
+		"mocha": "^2.3.3",
+		"should": "^7.1.0",
+		"should-promised": "^0.3.1"
+	},
+	"dependencies": {
+		"patter": "^0.1.2",
+		"jsonpatch": "^2.0.0",
+		"mongodb": "^2.0.43",
+		"node-promise-back": "^1.0.0",
+		"rfc6902-json-diff": "^0.1.2"
+	}
+}
