@@ -38,31 +38,23 @@ function shouldCounts(index, objects, repos, workspace) {
 		});
 }
 
-before(function () {
-
-	var callback = pb.native();
-	mongo.connect('mongodb://localhost/git-in-dev', callback);
-
-	return callback.promise.then(function (db) {
-		connection = db;
-		return db.collection(Client.COLLECTION_OBJECTS).removeMany({});
-	}).then(function () {
-		return connection.collection(Client.COLLECTION_WORKSPACE).removeMany({});
-	}).then(function () {
-		return connection.collection(Client.COLLECTION_INDEX).removeMany({});
-	}).then(function () {
-		return connection.collection(Client.COLLECTION_REPOS).removeMany({});
-	});
-
-});
-
 describe('ClientClient basics', function () {
 
 
 	it('Sets up', function () {
-		return Client({
-			mongo: connection
+
+		var callback = pb.native();
+		mongo.connect('mongodb://localhost/git-in-dev', callback);
+
+		return callback.promise.then(function (db) {
+			connection = db;
+			return Client({
+				mongo: db
+			});
 		}).then(function () {
+			console.log(Client);
+			return Client.prune();
+		}).then(function(){
 			return shouldCounts(0, 0, 0, 0);
 		});
 	});
