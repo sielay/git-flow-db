@@ -52,9 +52,8 @@ describe('ClientClient basics', function () {
 				mongo: db
 			});
 		}).then(function () {
-			console.log(Client);
 			return Client.prune();
-		}).then(function(){
+		}).then(function () {
 			return shouldCounts(0, 0, 0, 0);
 		});
 	});
@@ -302,6 +301,13 @@ describe('ClientClient', function () {
 			return shouldCounts(0, 17, 2, 0);
 		});
 
+	});
+
+	it('List repos', function () {
+		return Client.listForOrg(mockups.org).then(function(list) {
+			console.log(list);
+			return true;
+		});
 	});
 
 
@@ -613,7 +619,7 @@ describe('File contructor', function () {
 
 	});
 
-	it('| |  git merge other - error', function() {
+	it('| |  git merge other - error', function () {
 		return Repo1.merge('other').should.be.rejected();
 	});
 
@@ -704,10 +710,10 @@ describe('File contructor', function () {
 	});
 
 	/*
-	it('Debugs tree', function () {
-		return Client.debugTree(mockups.org, mockups.repo1, firstCommit);
-	});
-	*/
+	 it('Debugs tree', function () {
+	 return Client.debugTree(mockups.org, mockups.repo1, firstCommit);
+	 });
+	 */
 
 });
 
