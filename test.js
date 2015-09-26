@@ -335,6 +335,13 @@ describe('File contructor', function () {
 
 	});
 
+	it('Finds all branches - after commits', function () {
+		return Repo1.branches().then(function(list){
+			list.should.be.eql(['master']);
+			return true;
+		});
+	});
+
 	it(' |    git status -> empty ', function () {
 		return Repo1.status().should.eventually.be.equal(File.STATUS_EMPTY).then(function () {
 			return shouldCounts(0, 17, 2, 0);
@@ -595,7 +602,7 @@ describe('File contructor', function () {
 		});
 	});
 
-	it(' | |   git merge-base dev master', function () {
+	it(' | |  git merge-base dev master', function () {
 		return Repo1.commonBranchesAncestor('dev', 'master').then(function () {
 			return true;
 		})
@@ -623,7 +630,7 @@ describe('File contructor', function () {
 
 	});
 
-	it('| |  git merge other - error', function () {
+	it(' | |  git merge other - error', function () {
 		return Repo1.merge('other').should.be.rejected();
 	});
 
@@ -689,11 +696,11 @@ describe('File contructor', function () {
 		});
 	});
 
-	it(' |!| git merge dev -> conflict', function () {
+	it(' |!|  git merge dev -> conflict', function () {
 		return Repo1.merge('dev').should.be.rejected();
 	});
 
-	it(' |/| git merge dev resolve -> ok', function () {
+	it(' |/|  git merge dev resolve -> ok', function () {
 		return Repo1.merge('dev', {
 			'/value/v': 'theirs'
 		}).then(function () {
@@ -712,6 +719,14 @@ describe('File contructor', function () {
 			return true;
 		});
 	});
+
+	it('Finds all branches - after commits', function () {
+		return Repo1.branches().then(function(list){
+			list.should.be.eql(['master','dev']);
+			return true;
+		});
+	});
+
 
 	/*
 	 it('Debugs tree', function () {
