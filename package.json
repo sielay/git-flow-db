@@ -1,6 +1,6 @@
 {
   "name": "git-flow-db",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Storage of documents in database using git-a-like flow and versioning. Now on top of mongoDB",
   "main": "index.js",
   "scripts": {
