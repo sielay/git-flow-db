@@ -336,7 +336,7 @@ describe('File contructor', function () {
 	});
 
 	it('Finds all branches - after commits', function () {
-		return Repo1.branches().then(function(list){
+		return Repo1.branches().then(function (list) {
 			list.should.be.eql(['master']);
 			return true;
 		});
@@ -721,30 +721,96 @@ describe('File contructor', function () {
 	});
 
 	it('Finds all branches - after commits', function () {
-		return Repo1.branches().then(function(list){
-			list.should.be.eql(['master','dev']);
+		return Repo1.branches().then(function (list) {
+			list.should.be.eql(['master', 'dev']);
 			return true;
 		});
 	});
 
-	it('Generates tree', function(){
-		return Client.generateTree(mockups.org, mockups.repo1).then(function(tree){
+	it('Generates tree', function () {
+		return Client.generateTree(mockups.org, mockups.repo1).then(function (tree) {
 			return true;
 		});
 	});
 
-	it('Generates log', function(){
-		return Repo1.log().then(function(tree){
+	it('Generates log', function () {
+		return Repo1.log().then(function (tree) {
 			return true;
 		});
 	});
 
+});
 
-	/*
-	 it('Debugs tree', function () {
-	 return Client.debugTree(mockups.org, mockups.repo1, firstCommit);
-	 });
-	 */
+describe('Secondary flow - fixing wrong tree', function () {
+
+	var Repo2;
+
+	before(function () {
+		return Client.getFile(mockups.org2, mockups.repo1).then(function (file) {
+			Repo2 = file;
+			return true;
+		});
+	});
+
+	it(' *   First commit', function () {
+		return Repo2.commit({
+			message : 'commit 1'
+		}, {
+			v : 0
+		});
+	});
+
+	it(' |\\  Checkout dev', function() {
+		return Repo2.checkout('dev');
+	});
+
+	it(' | * Commit 2', function() {
+		return Repo2.commit({
+			message : 'Commit 2'
+		}, {
+			v : 1
+		});
+	});
+
+	it(' |/  Merge', function(){
+		return Repo2.checkout('master').then(function(){
+			return Repo2.merge('dev');
+		});
+	});
+
+	it(' * | Commit 3', function(){
+		return Repo2.commit({
+			message: 'Commit 3'
+		}, {
+			v: 2
+		});
+	});
+
+	it(' | x Checkout dev', function(){
+		return Repo2.checkout('dev').then(function(repo){
+			return true;
+		});
+	});
+
+	it(' | * Commit 4', function(){
+		return Repo2.commit({
+			message: 'Commit 4'
+		}, {
+			v: 3
+		})
+	});
+
+	it(' |x| Merge - expect error', function() {
+		return Repo2.checkout('master').then(function(){
+			return Repo2.merge('dev');
+		}).then(function(){
+			throw 'Expect error'
+		}, function(err) {
+			should.exist(err);
+			err.should.be.instanceOf(MergeError);
+			return true;
+		});
+	});
 
 });
 
