@@ -754,31 +754,31 @@ describe('Secondary flow - fixing wrong tree', function () {
 
 	it(' *   First commit', function () {
 		return Repo2.commit({
-			message : 'commit 1'
+			message: 'commit 1'
 		}, {
-			v : 0
+			v: 0
 		});
 	});
 
-	it(' |\\  Checkout dev', function() {
+	it(' |\\  Checkout dev', function () {
 		return Repo2.checkout('dev');
 	});
 
-	it(' | * Commit 2', function() {
+	it(' | * Commit 2', function () {
 		return Repo2.commit({
-			message : 'Commit 2'
+			message: 'Commit 2'
 		}, {
-			v : 1
+			v: 1
 		});
 	});
 
-	it(' |/  Merge', function(){
-		return Repo2.checkout('master').then(function(){
+	it(' |/  Merge', function () {
+		return Repo2.checkout('master').then(function () {
 			return Repo2.merge('dev');
 		});
 	});
 
-	it(' * | Commit 3', function(){
+	it(' * | Commit 3', function () {
 		return Repo2.commit({
 			message: 'Commit 3'
 		}, {
@@ -786,13 +786,13 @@ describe('Secondary flow - fixing wrong tree', function () {
 		});
 	});
 
-	it(' | x Checkout dev', function(){
-		return Repo2.checkout('dev').then(function(repo){
+	it(' | x Checkout dev', function () {
+		return Repo2.checkout('dev').then(function (repo) {
 			return true;
 		});
 	});
 
-	it(' | * Commit 4', function(){
+	it(' | * Commit 4', function () {
 		return Repo2.commit({
 			message: 'Commit 4'
 		}, {
@@ -800,16 +800,35 @@ describe('Secondary flow - fixing wrong tree', function () {
 		})
 	});
 
-	it(' |x| Merge - expect error', function() {
-		return Repo2.checkout('master').then(function(){
+	it(' |x| Merge - expect error', function () {
+		return Repo2.checkout('master').then(function () {
 			return Repo2.merge('dev');
-		}).then(function(){
+		}).then(function () {
+			/* istanbul ignore next */
 			throw 'Expect error'
-		}, function(err) {
+		}, function (err) {
 			should.exist(err);
 			err.should.be.instanceOf(MergeError);
 			return true;
 		});
+	});
+
+});
+
+describe('Search', function () {
+
+	it('Finds repos by query', function () {
+
+		return Client.find({
+			doc: 'REPO1234'
+		}).then(function (list) {
+			should.exist(list);
+			list.should.be.Array;
+			list.length.should.be.equal(2);
+			list[0].should.be.instanceOf(File);
+			return true;
+		});
+
 	});
 
 });
